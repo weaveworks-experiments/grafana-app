@@ -1,0 +1,11 @@
+{
+  "name": "weavecloud-flux-datasource",
+  "version": "0.0.1",
+  "description": "Weave Cloud Flux Grafana Datasource",
+  "devDependencies": {
+    "typescript": "^2.3.4"
+  },
+  "dependencies": {
+    "moment": "^2.18.1"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Weave Cloud Flux",
+  "id": "weavecloud-flux-datasource",
+  "type": "datasource",
+
+  "partials": {
+    "config": "public/app/plugins/datasource/simplejson/partials/config.html"
+  },
+
+  "metrics": false,
+  "annotations": true,
+
+  "info": {
+    "description": "Weave Cloud Flux Datasource",
+    "author": {
+      "name": "Weaveworks",
+      "url": "https://weave.works"
+    },
+    "logos": {
+      "small": "img/simpleJson_logo.svg",
+      "large": "img/simpleJson_logo.svg"
+    },
+    "links": [
+      {"name": "GitHub", "url": "https://github.com/weaveworks/simple-json-datasource"}
+    ],
+    "version": "1.3.1",
+    "updated": "2017-01-30"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}
