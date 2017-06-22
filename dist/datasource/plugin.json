@@ -1,0 +1,8 @@
+{
+  "name": "Weave Cloud Flux",
+  "id": "weavecloud-flux-datasource",
+  "type": "datasource",
+
+  "metrics": false,
+  "annotations": true
+}
