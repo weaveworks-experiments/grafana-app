@@ -5,6 +5,7 @@ class AnnotationsQueryCtrl {
 }
 
 class ConfigCtrl {
+  // TODO add a view explaining this is configured by the weave cloud app
 }
 
 export {AnnotationsQueryCtrl, ConfigCtrl, Datasource};

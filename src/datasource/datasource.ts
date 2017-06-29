@@ -26,7 +26,9 @@ export default class Datasource {
   }
 
   public annotationQuery(options: any) {
+    // TODO use URL as key
     const k = "fake"
+    // TODO add time filters to this query
     const p = this.backendSrv.datasourceRequest({
       url: this.url + '/history?service=%3Call%3E&simple=true&limit=1000',
     }).then((resp: any) => this.transformResponse(options.annotation, resp));
@@ -41,6 +43,8 @@ export default class Datasource {
       datasource: annotation.datasource,
       enabled: true,
     };
+    // TODO remove this slice
+    // TODO add regex filtering
     const events = response.data.slice(0, 100) as IFluxEvent[]
     const out = events.map((event) => {
       const stamp = moment(event.Stamp, "YYYY-MM-DDT-HH:mm:ss.SSSZ");

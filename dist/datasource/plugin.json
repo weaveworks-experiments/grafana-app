@@ -1,6 +1,6 @@
 {
-  "name": "Weave Cloud Flux",
-  "id": "weavecloud-flux-datasource",
+  "name": "Weave Cloud Flux Events",
+  "id": "weavecloud-flux",
   "type": "datasource",
 
   "metrics": false,

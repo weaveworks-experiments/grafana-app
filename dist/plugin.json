@@ -29,9 +29,7 @@
   "pages": [],
   "includes": [{
     "type": "datasource",
-    "name": "Flux Events",
-    "id": "weavecloud-flux-datasource",
-    "metrics": false,
-    "annotations": true
+    "name": "Weave Cloud Flux Events",
+    "id": "weavecloud-flux"
   }]
 }
