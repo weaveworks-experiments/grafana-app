@@ -4,6 +4,7 @@ interface IFluxEvent {
   Stamp: string;
   Data: string;
 }
+const RFC3339Nano = 'YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ';
 
 export default class Datasource {
   private type: any;
@@ -12,7 +13,7 @@ export default class Datasource {
   private q: any;
   private backendSrv: any;
   private templateSrv: any;
-  private queryCache: {[key: string]: Promise<any>};
+  private activeQueries: {[url: string]: Promise<any>};
 
   public constructor(instanceSettings: any, $q: any, backendSrv: any, templateSrv: any) {
       this.type = instanceSettings.type;
@@ -22,30 +23,31 @@ export default class Datasource {
       this.backendSrv = backendSrv;
       this.templateSrv = templateSrv;
 
-      this.queryCache = {};
+      this.activeQueries = {};
   }
 
   public annotationQuery(options: any) {
-    // TODO use URL as key
-    const k = "fake"
-    // TODO add time filters to this query
-    const p = this.backendSrv.datasourceRequest({
-      url: this.url + '/api/flux/v3/history?service=%3Call%3E&simple=true&limit=1000',
-    }).then((resp: any) => this.transformResponse(options.annotation, resp));
+    const {range: {from, to}} = options;
 
-    this.queryCache[k] = p
-    p.then(() => delete this.queryCache[k]);
-    return p;
+    const url = `${this.url}/api/flux/v3/history?service=%3Call%3E&simple=true&from=${from.utc().format(RFC3339Nano)}&to=${to.utc().format(RFC3339Nano)}`;
+    let promise = this.activeQueries[url];
+    if (promise === undefined){
+      promise = this.backendSrv.datasourceRequest({url}).then(
+        (resp: any) => this.transformResponse(options.annotation, resp));
+
+      this.activeQueries[url] = promise
+      promise.then(() => delete this.activeQueries[url]);
+    }
+    return promise;
   }
-  private transformResponse(annotation: any, response: any) {
+  private transformResponse(annotation: any, response: {data: IFluxEvent[]}) {
     const anno = {
       name: annotation.name,
       datasource: annotation.datasource,
       enabled: true,
     };
-    // TODO remove this slice
     // TODO add regex filtering
-    const events = response.data.slice(0, 100) as IFluxEvent[]
+    const events = response.data;
     const out = events.map((event) => {
       const stamp = moment(event.Stamp, "YYYY-MM-DDT-HH:mm:ss.SSSZ");
 
@@ -57,8 +59,6 @@ export default class Datasource {
         time: stamp.valueOf()
       }
     });
-    console.log("resF", out[0])
-    console.log("resL", out[out.length -1])
     return out;
   }
 }

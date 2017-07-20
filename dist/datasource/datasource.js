@@ -1,7 +1,7 @@
 System.register(["moment"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var moment_1, Datasource;
+    var moment_1, RFC3339Nano, Datasource;
     return {
         setters: [
             function (moment_1_1) {
@@ -9,6 +9,7 @@ System.register(["moment"], function (exports_1, context_1) {
             }
         ],
         execute: function () {
+            RFC3339Nano = 'YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ';
             Datasource = (function () {
                 function Datasource(instanceSettings, $q, backendSrv, templateSrv) {
                     this.type = instanceSettings.type;
@@ -17,17 +18,19 @@ System.register(["moment"], function (exports_1, context_1) {
                     this.q = $q;
                     this.backendSrv = backendSrv;
                     this.templateSrv = templateSrv;
-                    this.queryCache = {};
+                    this.activeQueries = {};
                 }
                 Datasource.prototype.annotationQuery = function (options) {
                     var _this = this;
-                    var k = "fake";
-                    var p = this.backendSrv.datasourceRequest({
-                        url: this.url + '/api/flux/v3/history?service=%3Call%3E&simple=true&limit=1000',
-                    }).then(function (resp) { return _this.transformResponse(options.annotation, resp); });
-                    this.queryCache[k] = p;
-                    p.then(function () { return delete _this.queryCache[k]; });
-                    return p;
+                    var _a = options.range, from = _a.from, to = _a.to;
+                    var url = this.url + "/api/flux/v3/history?service=%3Call%3E&simple=true&from=" + from.utc().format(RFC3339Nano) + "&to=" + to.utc().format(RFC3339Nano);
+                    var promise = this.activeQueries[url];
+                    if (promise === undefined) {
+                        promise = this.backendSrv.datasourceRequest({ url: url }).then(function (resp) { return _this.transformResponse(options.annotation, resp); });
+                        this.activeQueries[url] = promise;
+                        promise.then(function () { return delete _this.activeQueries[url]; });
+                    }
+                    return promise;
                 };
                 Datasource.prototype.transformResponse = function (annotation, response) {
                     var anno = {
@@ -35,7 +38,7 @@ System.register(["moment"], function (exports_1, context_1) {
                         datasource: annotation.datasource,
                         enabled: true,
                     };
-                    var events = response.data.slice(0, 100);
+                    var events = response.data;
                     var out = events.map(function (event) {
                         var stamp = moment_1.default(event.Stamp, "YYYY-MM-DDT-HH:mm:ss.SSSZ");
                         return {
@@ -46,8 +49,6 @@ System.register(["moment"], function (exports_1, context_1) {
                             time: stamp.valueOf()
                         };
                     });
-                    console.log("resF", out[0]);
-                    console.log("resL", out[out.length - 1]);
                     return out;
                 };
                 return Datasource;

@@ -74,9 +74,9 @@ System.register([], function (exports_1, context_1) {
                             jsonData: {}
                         };
                         var newFlux = {
-                            name: 'flux',
+                            name: 'Weave Cloud Events',
                             type: 'weavecloud-flux',
-                            url: 'https://cloud.weave.works/api/flux/v3',
+                            url: 'https://cloud.weave.works/',
                             access: 'proxy',
                             withCredentials: true,
                             basicAuth: true,
