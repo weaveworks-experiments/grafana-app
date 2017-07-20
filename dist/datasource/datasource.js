@@ -23,7 +23,7 @@ System.register(["moment"], function (exports_1, context_1) {
                     var _this = this;
                     var k = "fake";
                     var p = this.backendSrv.datasourceRequest({
-                        url: this.url + '/history?service=%3Call%3E&simple=true&limit=1000',
+                        url: this.url + '/api/flux/v3/history?service=%3Call%3E&simple=true&limit=1000',
                     }).then(function (resp) { return _this.transformResponse(options.annotation, resp); });
                     this.queryCache[k] = p;
                     p.then(function () { return delete _this.queryCache[k]; });

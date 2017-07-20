@@ -30,7 +30,7 @@ export default class Datasource {
     const k = "fake"
     // TODO add time filters to this query
     const p = this.backendSrv.datasourceRequest({
-      url: this.url + '/history?service=%3Call%3E&simple=true&limit=1000',
+      url: this.url + '/api/flux/v3/history?service=%3Call%3E&simple=true&limit=1000',
     }).then((resp: any) => this.transformResponse(options.annotation, resp));
 
     this.queryCache[k] = p
