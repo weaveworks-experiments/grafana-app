@@ -17,7 +17,7 @@ export default class Datasource {
 
   public constructor(instanceSettings: any, $q: any, backendSrv: any, templateSrv: any) {
       this.type = instanceSettings.type;
-      this.url = instanceSettings.url;
+      this.url = instanceSettings.url.replace(/\/+$/g, '');
       this.name = instanceSettings.name;
       this.q = $q;
       this.backendSrv = backendSrv;

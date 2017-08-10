@@ -13,9 +13,9 @@ System.register(["./datasource"], function (exports_1, context_1) {
             AnnotationsQueryCtrl = (function () {
                 function AnnotationsQueryCtrl() {
                 }
+                AnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
                 return AnnotationsQueryCtrl;
             }());
-            AnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
             exports_1("AnnotationsQueryCtrl", AnnotationsQueryCtrl);
             ConfigCtrl = (function () {
                 function ConfigCtrl() {

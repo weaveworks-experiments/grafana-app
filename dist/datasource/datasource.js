@@ -13,7 +13,7 @@ System.register(["moment"], function (exports_1, context_1) {
             Datasource = (function () {
                 function Datasource(instanceSettings, $q, backendSrv, templateSrv) {
                     this.type = instanceSettings.type;
-                    this.url = instanceSettings.url;
+                    this.url = instanceSettings.url.replace(/\/+$/g, '');
                     this.name = instanceSettings.name;
                     this.q = $q;
                     this.backendSrv = backendSrv;
