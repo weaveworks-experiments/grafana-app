@@ -16,9 +16,9 @@ System.register([], function (exports_1, context_1) {
             AnnotationsQueryCtrl = (function () {
                 function AnnotationsQueryCtrl() {
                 }
-                AnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
                 return AnnotationsQueryCtrl;
             }());
+            AnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
             ConfigCtrl = (function () {
                 function ConfigCtrl($scope, $injector, $q, backendSrv, alertSrv, contextSrv, datasourceSrv) {
                     console.log("here", this, arguments);
@@ -103,9 +103,9 @@ System.register([], function (exports_1, context_1) {
                         return promise;
                     });
                 };
-                ConfigCtrl.templateUrl = 'partials/config.html';
                 return ConfigCtrl;
             }());
+            ConfigCtrl.templateUrl = 'partials/config.html';
             exports_1("ConfigCtrl", ConfigCtrl);
         }
     };

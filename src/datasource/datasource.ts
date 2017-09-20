@@ -4,7 +4,11 @@ interface IFluxEvent {
   Stamp: string;
   Data: string;
 }
-const RFC3339Nano = 'YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ';
+const RFC3339Nano = 'YYYY-MM-DDTHH:mm:ss.SSSSSSSSS';
+
+function formatTime(time: any): string {
+  return `${time.utc().format(RFC3339Nano)}Z`;
+}
 
 export default class Datasource {
   private type: any;
@@ -28,8 +32,8 @@ export default class Datasource {
 
   public annotationQuery(options: any) {
     const {range: {from, to}} = options;
+    const url = `${this.url}/api/flux/v6/history?service=%3Call%3E&simple=true&after=${formatTime(from)}&before=${formatTime(to)}`;
 
-    const url = `${this.url}/api/flux/v3/history?service=%3Call%3E&simple=true&from=${from.utc().format(RFC3339Nano)}&to=${to.utc().format(RFC3339Nano)}`;
     let promise = this.activeQueries[url];
     if (promise === undefined){
       promise = this.backendSrv.datasourceRequest({url}).then(

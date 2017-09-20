@@ -1,6 +1,9 @@
 System.register(["moment"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
+    function formatTime(time) {
+        return time.utc().format(RFC3339Nano) + "Z";
+    }
     var moment_1, RFC3339Nano, Datasource;
     return {
         setters: [
@@ -9,7 +12,7 @@ System.register(["moment"], function (exports_1, context_1) {
             }
         ],
         execute: function () {
-            RFC3339Nano = 'YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ';
+            RFC3339Nano = 'YYYY-MM-DDTHH:mm:ss.SSSSSSSSS';
             Datasource = (function () {
                 function Datasource(instanceSettings, $q, backendSrv, templateSrv) {
                     this.type = instanceSettings.type;
@@ -23,7 +26,7 @@ System.register(["moment"], function (exports_1, context_1) {
                 Datasource.prototype.annotationQuery = function (options) {
                     var _this = this;
                     var _a = options.range, from = _a.from, to = _a.to;
-                    var url = this.url + "/api/flux/v3/history?service=%3Call%3E&simple=true&from=" + from.utc().format(RFC3339Nano) + "&to=" + to.utc().format(RFC3339Nano);
+                    var url = this.url + "/api/flux/v6/history?service=%3Call%3E&simple=true&after=" + formatTime(from) + "&before=" + formatTime(to);
                     var promise = this.activeQueries[url];
                     if (promise === undefined) {
                         promise = this.backendSrv.datasourceRequest({ url: url }).then(function (resp) { return _this.transformResponse(options.annotation, resp); });
